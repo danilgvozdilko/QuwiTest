@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.quwitest.R
-import com.example.quwitest.ui.authorization.AuthorizationFragment
 import com.example.quwitest.databinding.FragmentChatsBinding
 import com.example.quwitest.network.ApiService
+import com.example.quwitest.ui.authorization.AuthorizationFragment
 
 
 class ChatsFragment : Fragment() {
@@ -24,8 +24,7 @@ class ChatsFragment : Fragment() {
         )
     }
     private val apiService by lazy { ApiService.getInstance(sharedPreferences) }
-    private val chatsAdapter = ChatsAdapter {
-    }
+    private val chatsAdapter = ChatsAdapter()
 
     private val viewModel by lazy {
         ViewModelProvider(this, object : ViewModelProvider.Factory {

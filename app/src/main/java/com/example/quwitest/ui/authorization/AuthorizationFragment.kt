@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.quwitest.R
-import com.example.quwitest.ui.authorization.chats.ChatsFragment
 import com.example.quwitest.databinding.FragmentAuthorizationBinding
 import com.example.quwitest.network.ApiService
+import com.example.quwitest.ui.authorization.chats.ChatsFragment
 
 
 class AuthorizationFragment : Fragment() {
@@ -59,11 +59,6 @@ class AuthorizationFragment : Fragment() {
                     password = editPassword.text.toString()
                 )
                 viewModel.users.observe(viewLifecycleOwner) {
-                    val prefToken =
-                        requireContext().getSharedPreferences("TOKEN", Context.MODE_PRIVATE)
-                    val editor = prefToken.edit()
-                    editor.putString("TOKEN", it.token)
-                    editor.apply()
                     openChatsFragments(it.token)
                 }
 

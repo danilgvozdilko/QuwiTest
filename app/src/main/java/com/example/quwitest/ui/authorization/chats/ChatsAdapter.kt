@@ -9,13 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.quwitest.Constants
 import com.example.quwitest.R
 import com.example.quwitest.data.Channel
 import com.example.quwitest.databinding.ChatsBinding
 
-class ChatsAdapter(
-    private val onClickListener: (Channel) -> Unit
-) : ListAdapter<Channel, ChatsAdapter.ShopCategoryViewHolder>(
+class ChatsAdapter : ListAdapter<Channel, ChatsAdapter.ShopCategoryViewHolder>(
     DiffCallback()
 ) {
 
@@ -41,7 +40,7 @@ class ChatsAdapter(
         fun bind(channel: Channel?) {
             with(binding) {
                 val context = root.context
-                if (channel?.messageLast?.is_read.toString() == "1") {
+                if (channel?.message_last?.isRead() == true) {
                     isRead.setImageDrawable(
                         ContextCompat.getDrawable(
                             context,
@@ -57,13 +56,15 @@ class ChatsAdapter(
                     )
                 }
 
-                val dateFromApi = channel?.messageLast?.dta_create
-                val dates = dateFromApi?.substring(12, 16)
+                val me = context.getString(R.string.me)
+                val emptyDialog = context.getString(R.string.this_dialog_is_empty)
+                val dateFromApi = channel?.lastMessage?.dta_create
+                val dates = dateFromApi?.substring(Constants.HOUR, Constants.MINUTES)
 
-                name.text = channel?.messageLast?.user?.name ?: "Me"
+                name.text = channel?.lastMessage?.user?.name ?: me
                 txtDate.text = dates
-                dialog.text = channel?.messageLast?.text ?: "This dialog is empty"
-                if (channel?.pin_to_top == true) {
+                dialog.text = channel?.lastMessage?.text ?: emptyDialog
+                if (channel?.pin == true) {
                     pin.setImageDrawable(
                         ContextCompat.getDrawable(
                             context,
@@ -71,7 +72,7 @@ class ChatsAdapter(
                         )
                     )
                 }
-                val avatarUrl = channel?.messageLast?.user?.avatar_url?.firstOrNull()
+                val avatarUrl = channel?.lastMessage?.user?.avatar_url?.firstOrNull()
                 if (avatarUrl != null) {
                     Glide.with(avatar.context)
                         .load(avatarUrl)
